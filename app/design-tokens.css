@@ -1,0 +1,41 @@
+:root {
+  color-scheme: light;
+
+  --canvas: #F4F1E8;
+  --surface: #FBF9F3;
+  --surface-raised: #FCFAF5;
+  --surface-sage: #E5E9DE;
+  --surface-sand: #E8E0D1;
+  --surface-inverse: #153D2D;
+
+  --text-primary: #18372B;
+  --text-secondary: #3D5346;
+  --text-muted: #52675A;
+  --text-inverse: #FFFFFF;
+  --text-inverse-muted: #D6E1D4;
+
+  --action-primary: #153D2D;
+  --action-primary-hover: #0E3021;
+  --action-primary-active: #092418;
+  --action-secondary: #3E604B;
+  --accent-amber: #D5A15A;
+
+  --border-subtle: #C9D0C4;
+  --border-control: #6D806F;
+  --focus: #8A5A1E;
+  --focus-halo: color-mix(in srgb, var(--focus) 24%, transparent);
+
+  --status-success: #153D2D;
+  --status-success-surface: #E5E9DE;
+  --status-warning: #805217;
+  --status-warning-surface: #F5E5CB;
+  --status-error: #982D24;
+  --status-error-surface: #F9E5E1;
+
+  /* Reserved for the future color-scheme switch; not applied in v1. */
+  --dark-canvas: #10241B;
+  --dark-surface: #18372B;
+  --dark-surface-raised: #234535;
+  --dark-text-primary: #F6F3EA;
+  --dark-text-secondary: #D6E1D4;
+}

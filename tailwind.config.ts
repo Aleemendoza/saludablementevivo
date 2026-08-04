@@ -4,7 +4,13 @@ export default {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
-      colors: { forest: "#163d2e", moss: "#476252", cream: "#f8f7f2" },
+      colors: {
+        canvas: "var(--canvas)",
+        surface: "var(--surface)",
+        forest: "var(--action-primary)",
+        moss: "var(--action-secondary)",
+        cream: "var(--canvas)",
+      },
     },
   },
   plugins: [],
