@@ -1,0 +1,10 @@
+/* Generated master photography. Kept separate so source assets can be replaced without touching the design system. */
+.hero-photo {
+  background: linear-gradient(90deg, #eef0e8 0%, transparent 35%), url('/images/hero-premium-food.png') center / cover;
+}
+
+@media (max-width: 800px) {
+  .hero-photo {
+    background: linear-gradient(90deg, #eef0e8 0%, #eef0e8aa 45%, transparent), url('/images/hero-premium-food.png') center / cover;
+  }
+}

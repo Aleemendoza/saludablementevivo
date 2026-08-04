@@ -10,7 +10,7 @@ const categories = [
 ];
 
 const products = [
-  { name: "Almendras naturales", weight: "250 g", price: 6490, image: "https://images.unsplash.com/photo-1508061253366-41dbdb62519e?auto=format&fit=crop&w=900&q=85", tag: "Más elegido" },
+  { name: "Almendras naturales", weight: "250 g", price: 6490, image: "/images/almonds-front.png", tag: "Más elegido" },
   { name: "Mix energía", weight: "300 g", price: 7890, image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=900&q=85", tag: "Nuevo" },
   { name: "Chía orgánica", weight: "200 g", price: 4250, image: "https://images.unsplash.com/photo-1515543904379-3d757afe72e3?auto=format&fit=crop&w=900&q=85", tag: "Origen trazable" },
   { name: "Granola de la casa", weight: "350 g", price: 5980, image: "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=900&q=85", tag: "Sin azúcar refinada" },

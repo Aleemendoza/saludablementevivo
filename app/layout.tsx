@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./generated.css";
 
 export const metadata: Metadata = {
   title: "Saludablemente Vivo | Elegí comer mejor",
