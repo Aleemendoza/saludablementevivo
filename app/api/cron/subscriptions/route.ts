@@ -1,13 +1,13 @@
 import { timingSafeEqual } from "crypto";
 import { NextResponse, type NextRequest } from "next/server";
-import { getServerEnv } from "@/lib/env";
+import { getCronEnv } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
 function isAuthorized(request: NextRequest) {
-  const { CRON_SECRET } = getServerEnv();
+  const { CRON_SECRET } = getCronEnv();
   const token = request.headers.get("authorization")?.replace("Bearer ", "") ?? "";
   return token.length === CRON_SECRET.length && timingSafeEqual(Buffer.from(token), Buffer.from(CRON_SECRET));
 }

@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { NextResponse, type NextRequest } from "next/server";
-import { getServerEnv } from "@/lib/env";
+import { getEmailEnv, getMercadoPagoEnv } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createPaymentsClient } from "@/lib/mercadopago";
 import { Resend } from "resend";
@@ -8,7 +8,7 @@ import { Resend } from "resend";
 export const runtime = "nodejs";
 
 function isValidSignature(request: NextRequest, paymentId: string | undefined) {
-  const { MERCADOPAGO_WEBHOOK_SECRET } = getServerEnv();
+  const { MERCADOPAGO_WEBHOOK_SECRET } = getMercadoPagoEnv();
   const signature = request.headers.get("x-signature");
   const requestId = request.headers.get("x-request-id");
   if (!signature || !requestId || !paymentId) return false;
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   if (status === "approved" && payment.status !== "approved") {
     const { data: order } = await admin.from("orders").select("order_number, profiles!orders_user_id_fkey(email)").eq("id", orderId).single();
     const email = (order?.profiles as unknown as { email?: string } | null)?.email;
-    if (email && order) { const env = getServerEnv(); const sent = await new Resend(env.RESEND_API_KEY).emails.send({ from: env.EMAIL_FROM, to: email, subject: `Confirmamos tu pedido #${order.order_number}`, html: `<p>Recibimos tu pago. Ya estamos preparando tu pedido <strong>#${order.order_number}</strong>.</p>` }); await admin.from("email_logs").insert({ recipient: email, template: "order_confirmed", provider_id: sent.data?.id, status: sent.error ? "failed" : "sent", metadata: { orderId } }); }
+    if (email && order) { const env = getEmailEnv(); const sent = await new Resend(env.RESEND_API_KEY).emails.send({ from: env.EMAIL_FROM, to: email, subject: `Confirmamos tu pedido #${order.order_number}`, html: `<p>Recibimos tu pago. Ya estamos preparando tu pedido <strong>#${order.order_number}</strong>.</p>` }); await admin.from("email_logs").insert({ recipient: email, template: "order_confirmed", provider_id: sent.data?.id, status: sent.error ? "failed" : "sent", metadata: { orderId } }); }
   }
   return NextResponse.json({ received: true });
 }

@@ -5,7 +5,7 @@ import { checkoutSchema, type CheckoutInput } from "@/lib/validation/checkout";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createPreferencesClient } from "@/lib/mercadopago";
-import { getServerEnv } from "@/lib/env";
+import { getAppEnv } from "@/lib/env";
 
 async function rateLimit(action: string, userId: string, maximum = 5) {
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
@@ -34,7 +34,7 @@ export async function createPaymentPreference(orderId: string) {
   if (!payment) throw new Error("No encontramos el pago del pedido.");
   const attempt = Array.isArray(payment.payment_attempts) ? payment.payment_attempts.at(-1) : payment.payment_attempts;
   if (!attempt) throw new Error("No encontramos el intento de pago.");
-  const env = getServerEnv(); const preference = createPreferencesClient();
+  const env = getAppEnv(); const preference = createPreferencesClient();
   const response = await preference.create({ body: { items: [{ id: order.id, title: `Pedido #${order.order_number}`, quantity: 1, unit_price: Number(order.total), currency_id: order.currency }], external_reference: order.id, back_urls: { success: `${env.NEXT_PUBLIC_APP_URL}/checkout/confirmacion/${order.id}`, pending: `${env.NEXT_PUBLIC_APP_URL}/checkout/confirmacion/${order.id}`, failure: `${env.NEXT_PUBLIC_APP_URL}/checkout/confirmacion/${order.id}` }, auto_return: "approved", metadata: { order_id: order.id } } });
   await admin.from("payment_attempts").update({ preference_id: response.id, init_point: response.init_point, response_payload: response }).eq("id", attempt.id);
   return { initPoint: response.init_point as string };
