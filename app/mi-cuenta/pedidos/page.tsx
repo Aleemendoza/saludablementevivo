@@ -1,0 +1,4 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+export const dynamic = "force-dynamic";
+export default async function OrdersPage() { const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser(); if (!user) redirect("/checkout"); const { data: orders } = await supabase.from("orders").select("id,order_number,status,total,created_at,fulfillment").order("created_at", { ascending: false }); return <main className="section"><p className="eyebrow">MI CUENTA</p><h1>Mis pedidos</h1>{orders?.length ? <ul>{orders.map((order) => <li key={order.id}><a href={`/mi-cuenta/pedidos/${order.id}`}>Pedido #{order.order_number}</a> · {order.status} · ${Number(order.total).toLocaleString("es-AR")}</li>)}</ul> : <p>Todavía no tenés pedidos.</p>}</main>; }

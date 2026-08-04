@@ -3,6 +3,7 @@ import "./design-tokens.css";
 import "./globals.css";
 import "./generated.css";
 import "./catalog.css";
+import { CartProvider } from "./cart-provider";
 
 export const metadata: Metadata = {
   title: "Saludablemente Vivo | Elegí comer mejor",
@@ -13,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es"><body>{children}</body></html>;
+  return <html lang="es"><body><CartProvider>{children}</CartProvider></body></html>;
 }

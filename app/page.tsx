@@ -3,16 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import { baseProducts, combos, seasonalPacks, subscriptionPlans } from "@/lib/catalog/data";
 import { comboImages, productImages } from "@/lib/catalog/images";
+import { useCart } from "@/app/cart-provider";
 
 const featured = combos.filter((combo) => combo.featured);
 
 export default function Home() {
-  const [cartItems, setCartItems] = useState<string[]>([]);
+  const { items: cartItems, add, setQuantity, remove } = useCart();
   const [isAdding, setIsAdding] = useState<string | null>(null);
   const [toastProduct, setToastProduct] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cartSummaryRef = useRef<HTMLElement>(null);
-  const cartCount = cartItems.length;
+  const cartCount = cartItems.reduce((count, item) => count + item.quantity, 0);
 
   useEffect(() => {
     if (!toastProduct) return;
@@ -38,7 +39,8 @@ export default function Home() {
 
     setIsAdding(itemName);
     window.setTimeout(() => {
-      setCartItems((items) => [...items, itemName]);
+      const product = baseProducts.find(([, name]) => name === itemName);
+      add(product ? { kind: "product", id: product[0], name: itemName } : { kind: "combo", id: itemName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""), name: itemName });
       setToastProduct(itemName);
       setIsAdding(null);
     }, 450);
@@ -62,8 +64,8 @@ export default function Home() {
       {isCartOpen && (
         <aside className="cart-popover" id="cart-summary" ref={cartSummaryRef} tabIndex={-1} role="dialog" aria-label="Resumen de la bolsa">
           <div className="cart-popover-header"><div><p className="eyebrow">TU BOLSA</p><h2>{cartCount === 0 ? "Todavía está vacía." : `${cartCount} ${cartCount === 1 ? "producto" : "productos"} agregado${cartCount === 1 ? "" : "s"}.`}</h2></div><button className="cart-close" type="button" onClick={() => setIsCartOpen(false)} aria-label="Cerrar resumen de la bolsa">×</button></div>
-          {cartCount > 0 && <ul className="cart-items">{cartItems.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>}
-          <a className="button primary" href="#tienda" onClick={() => setIsCartOpen(false)}>Seguir comprando <span>→</span></a>
+          {cartCount > 0 && <ul className="cart-items">{cartItems.map((item) => <li key={`${item.kind}-${item.id}`}><span>{item.name}</span><div><button type="button" onClick={() => setQuantity(item.kind, item.id, item.quantity - 1)} aria-label={`Quitar una unidad de ${item.name}`}>−</button><b>{item.quantity}</b><button type="button" onClick={() => setQuantity(item.kind, item.id, item.quantity + 1)} aria-label={`Agregar una unidad de ${item.name}`}>+</button><button type="button" onClick={() => remove(item.kind, item.id)} aria-label={`Eliminar ${item.name}`}>×</button></div></li>)}</ul>}
+          <a className="button primary" href="/checkout" onClick={() => setIsCartOpen(false)}>{cartCount ? "Finalizar compra" : "Seguir comprando"} <span>→</span></a>
         </aside>
       )}
 
