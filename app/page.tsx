@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { baseProducts, combos, seasonalPacks, subscriptionPlans } from "@/lib/catalog/data";
 
-const categoryImages: Record<string, string> = { "Almendras": "/images/almonds-front.png", "Chía": "/images/seeds-category.png", "Avena": "/images/flours-category.png", "Granola": "/images/snacks-category.png" };
+const categoryImages: Record<string, string> = { "Almendras": "/images/almonds-front.png", "Nueces": "/images/product-walnuts.png", "Maní tostado": "/images/product-roasted-peanuts.png", "Chía": "/images/product-chia.png", "Lino": "/images/product-flax.png", "Sésamo": "/images/product-sesame.png", "Avena": "/images/product-oats.png", "Granola": "/images/product-granola.png", "Miel": "/images/product-honey.png", "Pasas de uva": "/images/product-raisins.png", "Mix Premium": "/images/product-mix-premium.png", "Mix Energía": "/images/product-mix-energy.png", "Harina de Almendra": "/images/product-almond-flour.png" };
 const featured = combos.filter((combo) => combo.featured);
 
 export default function Home() {
