@@ -7,4 +7,11 @@ export const subscriptionPlanImages: Record<string, string> = {
   Desayuno: "/images/plan-breakfast.png",
   Fitness: "/images/plan-fitness.png",
   Bienestar: "/images/plan-wellbeing.png",
+  Corazón: "/images/plan-heart.png",
+  Familiar: "/images/plan-family.png",
+  Keto: "/images/plan-keto.png",
+  Vegano: "/images/plan-vegan.png",
+  Oficina: "/images/plan-office.png",
+  Universitario: "/images/plan-university.png",
+  Personalizado: "/images/plan-custom.png",
 };
