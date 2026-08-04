@@ -1,0 +1,4 @@
+import { subscriptionPlans } from "@/lib/catalog/data";
+
+export const metadata = { title: "Suscripciones | Saludablemente Vivo" };
+export default function SubscriptionsPage() { return <main><section className="section"><p className="eyebrow">SUSCRIPCIONES MENSUALES</p><h1>Lo que necesitás,<br /><em>cada 30 días.</em></h1><p className="lead">Envío programado, pausa o cancelación cuando quieras y beneficios que acompañan tu rutina.</p><div className="offer-grid">{subscriptionPlans.map(([name, purpose, items, benefit]) => <article className="offer-card" key={name}><div className="offer-content"><p className="eyebrow">PLAN MENSUAL</p><h3>Plan {name}</h3><p>{purpose}</p><ul>{items.map((item) => <li key={item}>{item}</li>)}</ul><div className="offer-footer"><span>{benefit}</span><button>Suscribirme →</button></div></div></article>)}</div></section></main>; }

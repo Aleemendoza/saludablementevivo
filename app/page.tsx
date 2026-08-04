@@ -1,57 +1,26 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { baseProducts, combos, seasonalPacks, subscriptionPlans } from "@/lib/catalog/data";
 
-const categories = [
-  ["Frutos secos", "Almendras, nueces y más", "/images/hero-premium-food.png"],
-  ["Semillas", "Pequeñas, potentes, esenciales", "/images/seeds-category.png"],
-  ["Harinas", "Para crear a tu manera", "/images/flours-category.png"],
-  ["Snacks", "Pausa rica, energía real", "/images/snacks-category.png"],
-];
-
-const products = [
-  { name: "Almendras naturales", weight: "250 g", price: 6490, image: "/images/almonds-front.png", tag: "Más elegido" },
-  { name: "Mix energía", weight: "300 g", price: 7890, image: "/images/snacks-category.png", tag: "Nuevo" },
-  { name: "Chía orgánica", weight: "200 g", price: 4250, image: "/images/seeds-category.png", tag: "Origen trazable" },
-  { name: "Granola de la casa", weight: "350 g", price: 5980, image: "/images/snacks-category.png", tag: "Sin azúcar refinada" },
-];
-
-const formatPrice = (price: number) => new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(price);
+const categoryImages: Record<string, string> = { "Almendras": "/images/almonds-front.png", "Chía": "/images/seeds-category.png", "Avena": "/images/flours-category.png", "Granola": "/images/snacks-category.png" };
+const featured = combos.filter((combo) => combo.featured);
 
 export default function Home() {
-  const [cart, setCart] = useState<string[]>([]);
-  const cartLabel = useMemo(() => cart.length ? `${cart.length} producto${cart.length > 1 ? "s" : ""}` : "Carrito", [cart]);
-  const add = (name: string) => setCart((items) => [...items, name]);
-
+  const [cartCount, setCartCount] = useState(0);
   return <main>
     <a className="skip" href="#contenido">Saltar al contenido</a>
-    <div className="topbar">Envío sin cargo en compras superiores a $45.000 <span>•</span> Retiro disponible en Los Perales, San Salvador de Jujuy</div>
-    <header className="header">
-      <a className="brand" href="#inicio" aria-label="Saludablemente Vivo, inicio"><span>SV</span> saludablemente<br />vivo</a>
-      <nav aria-label="Navegación principal"><a href="#productos">Tienda</a><a href="#combos">Combos</a><a href="#suscripciones">Suscripciones</a><a href="#nosotros">Nosotros</a></nav>
-      <div className="actions"><button className="icon-button" aria-label="Buscar">⌕</button><button className="cart" aria-label={`Abrir ${cartLabel}`}>Bolsa <b>{cart.length}</b></button></div>
-    </header>
-
-    <section className="hero" id="inicio" aria-labelledby="hero-title">
-      <div className="hero-copy"><p className="eyebrow">NUTRICIÓN, SIN COMPLICACIONES</p><h1 id="hero-title">Comé mejor.<br /><em>Nosotros hacemos<br />el resto.</em></h1><p className="lead">Productos naturales seleccionados, envasados al vacío y entregados directamente en tu puerta.</p><div className="hero-actions"><a className="button primary" href="#productos">Comprar ahora <span>→</span></a><a className="button secondary" href="#combos">Ver combos</a></div></div>
-      <div className="hero-image" role="img" aria-label="Selección de alimentos naturales en mesa de madera"><div className="hero-photo" /></div>
-      <div className="hero-note"><span className="seal">✦</span><div><strong>Selección consciente</strong><br /><small>Cada producto, elegido por calidad.</small></div></div>
-    </section>
-
-    <section className="assurances" aria-label="Beneficios de comprar con nosotros">
-      {[['↗','Entrega local','Los Perales y San Salvador'],['✦','Sellado al vacío','Frescura que se nota'],['✓','Calidad garantizada','Seleccionamos lo mejor'],['⌂','Retiro disponible','Los Perales, Jujuy']].map(([icon,title,text]) => <div className="assurance" key={title}><i>{icon}</i><div><strong>{title}</strong><span>{text}</span></div></div>)}
-    </section>
-
-    <section className="section categories" id="contenido"><div className="section-heading"><div><p className="eyebrow">EXPLORÁ</p><h2>Lo bueno empieza<br />por elegir bien.</h2></div><a href="#productos" className="text-link">Ver todas las categorías <span>→</span></a></div><div className="category-grid">{categories.map(([name,desc,image]) => <a className="category" href="#productos" key={name}><img src={image} alt="" /><div><h3>{name}</h3><p>{desc}</p><span>Explorar <b>→</b></span></div></a>)}</div></section>
-
-    <section className="section products" id="productos"><div className="section-heading"><div><p className="eyebrow">NUESTROS FAVORITOS</p><h2>Elegidos para vos.</h2></div><p className="section-text">Ingredientes simples. Calidad visible.<br />Sabor que acompaña todos los días.</p></div><div className="product-grid">{products.map((product) => <article className="product" key={product.name}><div className="product-image"><img src={product.image} alt={product.name} /><span>{product.tag}</span><button aria-label={`Agregar ${product.name} a favoritos`}>♡</button></div><div className="product-info"><div><h3>{product.name}</h3><p>{product.weight} · Envasado al vacío</p></div><strong>{formatPrice(product.price)}</strong></div><button className="add" onClick={() => add(product.name)}>Agregar <span>+</span></button></article>)}</div></section>
-
-    <section className="combo-section" id="combos"><div className="combo-visual"><img src="/images/combo-fitness.png" alt="Combo fitness con alimentos saludables" /><div className="combo-sticker">Hasta<br /><b>15%</b><br />menos</div></div><div className="combo-copy"><p className="eyebrow">CAJAS QUE RESUELVEN</p><h2>Todo lo que necesitás,<br /><em>en una sola caja.</em></h2><p>Combinamos nuestros productos favoritos para cada momento de tu rutina. Menos decisiones, más bienestar.</p><ul><li>Selección curada por nutricionistas</li><li>Mejor precio que por separado</li><li>Listo para regalar (o regalarte)</li></ul><a className="button primary" href="#productos">Conocé los combos <span>→</span></a></div></section>
-
-    <section className="subscription" id="suscripciones"><div><p className="eyebrow">A TU RITMO</p><h2>Tu despensa,<br />siempre completa.</h2><p>Recibí tus favoritos de forma periódica. Elegís la frecuencia, cambiás cuando querés y ahorrás en cada envío.</p><a className="button light" href="#suscripciones">Ver suscripciones <span>→</span></a></div><div className="subscription-card"><span className="mini-label">PLAN FITNESS</span><h3>Movete con energía.</h3><p>Una selección mensual pensada para acompañar tus objetivos.</p><div className="subscription-items"><span>Almendras</span><span>Mix proteína</span><span>Semillas</span></div><strong>15% <small>de descuento</small></strong></div></section>
-
-    <section className="journal" id="nosotros"><p className="eyebrow">NUESTRA FORMA DE HACER</p><h2>Comer bien debería ser<br />una elección fácil.</h2><p>Elegimos productos honestos, cuidamos cómo los envasamos y los llevamos a tu casa con la misma atención con la que los elegiríamos para la nuestra.</p><a href="#inicio" className="text-link">Conocé nuestra historia <span>→</span></a></section>
-
-    <footer><a className="brand" href="#inicio"><span>SV</span> saludablemente<br />vivo</a><p>Alimentos reales para una vida más liviana.</p><div className="footer-links"><a href="#productos">Tienda</a><a href="#suscripciones">Suscripciones</a><a href="#nosotros">Contacto</a></div><small>© 2026 Saludablemente Vivo · Hecho con cuidado en Los Perales, San Salvador de Jujuy</small></footer>
+    <div className="topbar">Seleccionado y preparado en Los Perales, San Salvador de Jujuy <span>•</span> Retiro disponible y entregas locales</div>
+    <header className="header"><a className="brand" href="#inicio"><span>SV</span> saludablemente<br />vivo</a><nav aria-label="Navegación principal"><a href="#tienda">Tienda</a><a href="#combos">Combos</a><a href="#suscripciones">Suscripciones</a><a href="#beneficios">Beneficios</a></nav><button className="cart" aria-label={`Abrir carrito con ${cartCount} productos`}>Bolsa <b>{cartCount}</b></button></header>
+    <section className="hero" id="inicio"><div className="hero-copy"><p className="eyebrow">ALIMENTOS REALES, ELEGIDOS CON CUIDADO</p><h1>Comé mejor.<br /><em>Nosotros hacemos<br />el resto.</em></h1><p className="lead">Tu despensa saludable, seleccionada, envasada al vacío y preparada desde Los Perales.</p><div className="hero-actions"><a className="button primary" href="#combos">Elegí un combo <span>→</span></a><a className="button secondary" href="#tienda">Comprar productos</a></div></div><div className="hero-image" role="img" aria-label="Selección de alimentos saludables envasados al vacío"><div className="hero-photo" /></div></section>
+    <section className="assurances" aria-label="Beneficios"><div className="assurance"><i>⌂</i><div><strong>Retiro en Los Perales</strong><span>Cuando te quede cómodo</span></div></div><div className="assurance"><i>↗</i><div><strong>Entrega local</strong><span>San Salvador de Jujuy</span></div></div><div className="assurance"><i>✦</i><div><strong>Sellado al vacío</strong><span>Frescura que se nota</span></div></div><div className="assurance"><i>✓</i><div><strong>15 productos, muchas opciones</strong><span>Menos stock, mejor selección</span></div></div></section>
+    <section className="section decision-paths" id="contenido"><p className="eyebrow">ELEGÍ COMO TE RESULTE MÁS FÁCIL</p><h2>No necesitás saber<br /><em>exactamente qué comprar.</em></h2><div className="path-grid"><a href="#tienda"><b>01</b><h3>Comprar productos</h3><p>Para quien ya sabe qué está buscando.</p><span>Ver los 15 productos →</span></a><a href="#combos"><b>02</b><h3>Elegí un combo</h3><p>Una selección lista para tu objetivo.</p><span>Encontrar el mío →</span></a><a href="#suscripciones"><b>03</b><h3>Recibí todos los meses</h3><p>Tu despensa se repone sola cada 30 días.</p><span>Ver planes →</span></a><a href="#beneficios"><b>04</b><h3>Sumá beneficios</h3><p>Puntos, referidos y packs de temporada.</p><span>Conocer beneficios →</span></a></div></section>
+    <section className="section products" id="tienda"><div className="section-heading"><div><p className="eyebrow">LOS 15 ESENCIALES</p><h2>Todo lo bueno,<br />sin complicarlo.</h2></div><p className="section-text">El catálogo inicial crece desde una selección clara, fresca y versátil.</p></div><div className="base-product-grid">{baseProducts.map(([slug, name, weight], index) => <article className="base-product" key={slug}><img src={categoryImages[name] ?? "/images/hero-premium-food.png"} alt={name} /><div><p>{weight}</p><h3>{name}</h3><span>Desde</span><button onClick={() => setCartCount((count) => count + 1)} aria-label={`Agregar ${name} a la bolsa`}>Agregar <b>+</b></button></div></article>)}</div></section>
+    <section className="section featured-combos" id="combos"><div className="section-heading"><div><p className="eyebrow">COMBOS DESTACADOS</p><h2>Elegidos para tu<br /><em>momento del día.</em></h2></div><a className="text-link" href="/combos">Ver los 22 combos <span>→</span></a></div><div className="offer-grid">{featured.map((combo, index) => <article className="offer-card" key={combo.name}><img src={index === 1 ? "/images/combo-fitness.png" : "/images/hero-premium-food.png"} alt="" /><div className="offer-content"><p className="eyebrow">{combo.group.toUpperCase()}</p><h3>{combo.name}</h3><p>{combo.purpose}</p><ul>{combo.items.map((item) => <li key={item}>{item}</li>)}</ul><div className="offer-footer"><span>Ahorrás {combo.discount}%</span><button onClick={() => setCartCount((count) => count + 1)}>Elegir combo →</button></div></div></article>)}</div></section>
+    <section className="profiles"><div><p className="eyebrow">ELEGÍ SEGÚN VOS</p><h2>Una buena elección<br />empieza por entender<br /><em>tu rutina.</em></h2></div><div className="profile-links">{[["Para desayunos", "Avena, granola, miel y semillas."],["Para entrenar", "Energía real antes y después."],["Para estudiar", "Snacks para acompañar el foco."],["Para la familia", "Más cantidad, más tranquilidad."],["Para regalar", "Cajas con buena intención."]].map(([title, detail]) => <a href="#combos" key={title}><h3>{title}</h3><p>{detail}</p><span>Explorar →</span></a>)}</div></section>
+    <section className="subscription" id="suscripciones"><div><p className="eyebrow">CADA 30 DÍAS</p><h2>Tu despensa,<br /><em>siempre completa.</em></h2><p>Elegí un plan, recibí tus favoritos todos los meses y pausá o cancelá cuando quieras.</p><a className="button light" href="/suscripciones">Ver todos los planes <span>→</span></a></div><div className="plan-stack">{subscriptionPlans.slice(0, 3).map(([name, purpose, items, benefit]) => <article key={name}><span>{name === "Esencial" ? "MÁS ELEGIDO" : "MENSUAL"}</span><h3>Plan {name}</h3><p>{purpose}</p><small>{items.join(" · ")}</small><strong>{benefit}</strong></article>)}</div></section>
+    <section className="section benefits" id="beneficios"><div className="section-heading"><div><p className="eyebrow">BENEFICIOS QUE VUELVEN</p><h2>Comer mejor también<br />puede darte más.</h2></div></div><div className="benefit-grid"><article><b>01</b><h3>Sumá puntos</h3><p>1 punto por cada $1.000 de compra aprobada.</p><span>50 puntos = 5% OFF</span></article><article><b>02</b><h3>Canjeá cuando quieras</h3><p>100 puntos = envío gratis. 200 puntos = Mix Premium de regalo.</p><span>Sujeto a stock</span></article><article><b>03</b><h3>Invitá a alguien</h3><p>Tu amigo recibe bienvenida; vos sumás puntos cuando hace su primera compra.</p><span>Beneficio para ambos</span></article></div></section>
+    <section className="seasonal"><p className="eyebrow">PACKS QUE CAMBIAN CON LA TEMPORADA</p><h2>Siempre hay una<br /><em>buena excusa para elegirte.</em></h2><div>{seasonalPacks.map((pack) => <span key={pack}>{pack}</span>)}</div><a className="button primary" href="/promos">Ver promociones <span>→</span></a></section>
+    <footer><a className="brand" href="#inicio"><span>SV</span> saludablemente<br />vivo</a><p>Alimentos reales para una vida más liviana.</p><div className="footer-links"><a href="#tienda">Tienda</a><a href="#suscripciones">Suscripciones</a><a href="#beneficios">Beneficios</a></div><small>© 2026 Saludablemente Vivo · Hecho con cuidado en Los Perales, San Salvador de Jujuy</small></footer>
   </main>;
 }
