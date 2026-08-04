@@ -72,6 +72,29 @@ nav a:hover { border-color: var(--action-secondary); color: var(--action-primary
 .cart { padding: 0 16px; font-size: 12px; font-weight: 800; }
 .cart b { margin-left: 8px; padding: 3px 6px; border-radius: 50%; background: var(--action-primary); color: var(--text-inverse); font-size: 10px; }
 
+.button-spinner { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+button[aria-busy="true"] { cursor: wait; }
+button:disabled { cursor: not-allowed; opacity: .72; }
+
+.cart-popover { position: fixed; z-index: 8; top: 104px; right: clamp(16px, 5vw, 82px); width: min(360px, calc(100vw - 32px)); padding: 24px; background: var(--surface-raised); border: 1px solid var(--border-control); box-shadow: 0 20px 50px color-mix(in srgb, var(--text-primary) 20%, transparent); }
+.cart-popover-header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.cart-popover .eyebrow { margin-bottom: 8px; }
+.cart-popover h2 { font-size: 24px; }
+.cart-close { display: grid; width: 48px; height: 48px; flex: 0 0 auto; place-items: center; border: 1px solid var(--border-control); border-radius: 50%; background: var(--surface); color: var(--text-primary); font-size: 25px; }
+.cart-items { max-height: 180px; margin: 22px 0; padding: 0; overflow-y: auto; border-top: 1px solid var(--border-subtle); list-style: none; }
+.cart-items li { padding: 10px 0; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 13px; }
+.cart-popover .button { width: 100%; margin-top: 20px; }
+
+.cart-toast { position: fixed; z-index: 10; right: 24px; bottom: 24px; display: flex; width: min(390px, calc(100vw - 32px)); align-items: start; gap: 12px; padding: 16px; background: var(--surface-raised); border: 1px solid var(--border-control); border-left: 4px solid var(--status-success); box-shadow: 0 18px 42px color-mix(in srgb, var(--text-primary) 22%, transparent); animation: toast-in .22s ease-out; }
+.toast-icon { display: grid; width: 24px; height: 24px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--status-success-surface); color: var(--status-success); font-weight: 900; }
+.cart-toast strong, .cart-toast a { display: block; font-size: 13px; }
+.cart-toast strong { color: var(--text-primary); }
+.cart-toast a { width: fit-content; margin-top: 5px; border-bottom: 1px solid currentColor; color: var(--text-primary); font-weight: 800; }
+.cart-toast button { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; margin-left: auto; border: 0; background: transparent; color: var(--text-primary); font-size: 24px; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
 .hero { position: relative; min-height: 640px; overflow: hidden; padding: clamp(70px, 10vw, 145px) clamp(22px, 10vw, 160px); background: var(--surface-sage); }
 .hero-copy { position: relative; z-index: 2; max-width: 560px; }
 .eyebrow { margin: 0 0 18px; color: var(--text-secondary); font: 700 11px "DM Mono", monospace; letter-spacing: .1em; }
@@ -239,4 +262,6 @@ footer small { display: block; margin-top: 58px; padding-top: 17px; border-top: 
   .subscription { margin: 0; padding: 60px 24px; }
   .subscription-card { padding: 28px; box-shadow: 8px 8px 0 var(--action-secondary); }
   .footer-links { flex-wrap: wrap; gap: 16px; }
+  .cart-popover { top: 86px; right: 16px; }
+  .cart-toast { right: 16px; bottom: 16px; }
 }
