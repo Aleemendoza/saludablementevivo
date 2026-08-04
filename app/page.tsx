@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { baseProducts, combos, seasonalPacks, subscriptionPlans } from "@/lib/catalog/data";
+import { comboImages } from "@/lib/catalog/images";
 
 const categoryImages: Record<string, string> = { "Almendras": "/images/almonds-front.png", "Nueces": "/images/product-walnuts.png", "Maní tostado": "/images/product-roasted-peanuts.png", "Chía": "/images/product-chia.png", "Lino": "/images/product-flax.png", "Sésamo": "/images/product-sesame.png", "Avena": "/images/product-oats.png", "Granola": "/images/product-granola.png", "Miel": "/images/product-honey.png", "Pasas de uva": "/images/product-raisins.png", "Mix Premium": "/images/product-mix-premium.png", "Mix Energía": "/images/product-mix-energy.png", "Harina de Almendra": "/images/product-almond-flour.png", "Harina de Coco": "/images/product-coconut-flour.png", "Mantequilla de Maní": "/images/product-peanut-butter.png" };
-const comboImages: Record<string, string> = { "Desayuno Clásico": "/images/combo-breakfast-classic.png", "Fitness Premium": "/images/combo-fitness.png", "Energía Diaria": "/images/combo-daily-energy.png", "Bienestar Diario": "/images/combo-daily-wellbeing.png", "Keto Premium": "/images/combo-keto-premium.png", "Familiar Premium": "/images/combo-family-premium.png" };
 const featured = combos.filter((combo) => combo.featured);
 
 export default function Home() {
