@@ -2,12 +2,13 @@
 
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { emailSchema, otpSchema } from "@/lib/validation/auth";
 
 const MAX_ATTEMPTS = 5;
 
 export async function requestOtp(rawEmail: string) {
+  const supabaseAdmin = createAdminClient();
   const email = emailSchema.parse(rawEmail);
   const requestHeaders = await headers();
   const ip = requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
@@ -23,6 +24,7 @@ export async function requestOtp(rawEmail: string) {
 }
 
 export async function verifyOtp(rawEmail: string, rawToken: string) {
+  const supabaseAdmin = createAdminClient();
   const email = emailSchema.parse(rawEmail);
   const token = otpSchema.parse(rawToken);
   const supabase = await createClient();
